@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "iid": { "type": "integer" },
+    "group_id": { "type": "integer" },
+    "parent_id": { "type": ["integer", "null"] },
+    "title": { "type": "string" },
+    "description": { "type": ["string", "null"] },
+    "author": {
+      "type": ["object", "null"],
+      "properties": {
+        "name": { "type": "string" },
+        "username": { "type": "string" },
+        "id": { "type": "integer" },
+        "state": { "type": "string" },
+        "avatar_url": { "type": "uri" },
+        "web_url": { "type": "uri" }
+      },
+      "additionalProperties": false
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "upvotes": { "type":  "integer" },
+    "downvotes": { "type":  "integer" },
+    "start_date": { "type": ["date", "null"] },
+    "start_date_fixed": { "type": ["date", "null"] },
+    "start_date_from_milestones": { "type": ["date", "null"] },
+    "start_date_from_inherited_source": { "type": ["date", "null"] },
+    "start_date_is_fixed": { "type": "boolean" },
+    "end_date": { "type": ["date", "null"] },
+    "due_date": { "type": ["date", "null"] },
+    "due_date_fixed": { "type": ["date", "null"] },
+    "due_date_from_milestones": { "type": ["date", "null"] },
+    "due_date_from_inherited_source": { "type": ["date", "null"] },
+    "due_date_is_fixed": { "type": "boolean" },
+    "state": { "type": "string" },
+    "created_at": { "type": ["string", "null"] },
+    "updated_at": { "type": ["string", "null"] },
+    "closed_at": { "type": ["string", "null"] },
+    "web_edit_url": { "type":  "string" },
+    "web_url": { "type":  "string" },
+    "reference": { "type":  "string" },
+    "references": {
+      "short": {"type": "string"},
+      "relative": {"type": "string"},
+      "full": {"type": "string"}
+    },
+    "subscribed": { "type": ["boolean", "null"] }
+  },
+  "required": [
+    "id", "iid", "group_id", "title"
+  ],
+  "additionalProperties": false
+}

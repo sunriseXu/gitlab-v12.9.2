@@ -1,0 +1,191 @@
+<script>
+import { mapActions, mapState } from 'vuex';
+import { GlButton, GlSkeletonLoading, GlFormCheckbox } from '@gitlab/ui';
+import SeverityBadge from 'ee/vue_shared/security_reports/components/severity_badge.vue';
+import Icon from '~/vue_shared/components/icon.vue';
+import VulnerabilityActionButtons from './vulnerability_action_buttons.vue';
+import VulnerabilityIssueLink from './vulnerability_issue_link.vue';
+import { DASHBOARD_TYPES } from '../store/constants';
+
+export default {
+  name: 'SecurityDashboardTableRow',
+  components: {
+    GlButton,
+    GlFormCheckbox,
+    GlSkeletonLoading,
+    Icon,
+    SeverityBadge,
+    VulnerabilityActionButtons,
+    VulnerabilityIssueLink,
+  },
+  props: {
+    vulnerability: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+    isLoading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  computed: {
+    ...mapState(['dashboardType']),
+    ...mapState('vulnerabilities', ['selectedVulnerabilities']),
+    severity() {
+      return this.vulnerability.severity || ' ';
+    },
+    vulnerabilityNamepace() {
+      const { project, location } = this.vulnerability;
+      if (this.dashboardType === DASHBOARD_TYPES.GROUP) {
+        return project && project.full_name;
+      }
+      return location && (location.image || location.file || location.path);
+    },
+    isDismissed() {
+      return Boolean(this.vulnerability.dismissal_feedback);
+    },
+    hasIssue() {
+      return Boolean(
+        this.vulnerability.issue_feedback && this.vulnerability.issue_feedback.issue_iid,
+      );
+    },
+    canDismissVulnerability() {
+      const path = this.vulnerability.create_vulnerability_feedback_dismissal_path;
+      return Boolean(path);
+    },
+    canCreateIssue() {
+      const path = this.vulnerability.create_vulnerability_feedback_issue_path;
+      return Boolean(path) && !this.hasIssue;
+    },
+    isSelected() {
+      return Boolean(this.selectedVulnerabilities[this.vulnerability.id]);
+    },
+  },
+  methods: {
+    ...mapActions('vulnerabilities', ['openModal', 'selectVulnerability', 'deselectVulnerability']),
+    toggleVulnerability() {
+      if (this.isSelected) {
+        return this.deselectVulnerability(this.vulnerability);
+      }
+      return this.selectVulnerability(this.vulnerability);
+    },
+  },
+};
+</script>
+
+<template>
+  <div
+    class="gl-responsive-table-row vulnerabilities-row p-2"
+    :class="{ dismissed: isDismissed, 'gl-bg-blue-50': isSelected }"
+  >
+    <div class="table-section">
+      <gl-form-checkbox
+        :checked="isSelected"
+        class="my-0 ml-1 mr-3"
+        @change="toggleVulnerability"
+      />
+    </div>
+
+    <div class="table-section section-10">
+      <div class="table-mobile-header" role="rowheader">{{ s__('Reports|Severity') }}</div>
+      <div class="table-mobile-content"><severity-badge :severity="severity" /></div>
+    </div>
+
+    <div class="table-section flex-grow-1">
+      <div class="table-mobile-header" role="rowheader">{{ s__('Reports|Vulnerability') }}</div>
+      <div
+        class="table-mobile-content vulnerability-info"
+        data-qa-selector="vulnerability_info_content"
+      >
+        <gl-skeleton-loading v-if="isLoading" class="mt-2 js-skeleton-loader" :lines="2" />
+        <template v-else>
+          <gl-button
+            class="vulnerability-title d-inline"
+            variant="blank"
+            @click="openModal({ vulnerability })"
+            >{{ vulnerability.name }}</gl-button
+          >
+          <template v-if="isDismissed">
+            <icon
+              v-show="vulnerability.dismissal_feedback.comment_details"
+              name="comment"
+              class="text-warning vertical-align-middle"
+            />
+            <span class="vertical-align-middle text-uppercase">{{
+              s__('vulnerability|dismissed')
+            }}</span>
+          </template>
+          <vulnerability-issue-link
+            v-if="hasIssue"
+            class="text-nowrap"
+            :issue="vulnerability.issue_feedback"
+            :project-name="vulnerability.project.name"
+          />
+          <br />
+          <span v-if="vulnerabilityNamepace" class="vulnerability-namespace">
+            {{ vulnerabilityNamepace }}
+          </span>
+        </template>
+      </div>
+    </div>
+
+    <div class="table-section section-20">
+      <div class="table-mobile-header" role="rowheader">{{ s__('Reports|Actions') }}</div>
+      <div class="table-mobile-content action-buttons d-flex justify-content-end">
+        <vulnerability-action-buttons
+          v-if="!isLoading"
+          :vulnerability="vulnerability"
+          :can-create-issue="canCreateIssue"
+          :can-dismiss-vulnerability="canDismissVulnerability"
+          :is-dismissed="isDismissed"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+@media (min-width: 768px) {
+  .vulnerabilities-row:last-child {
+    border-bottom: 1px solid transparent;
+  }
+
+  .vulnerabilities-row:hover,
+  .vulnerabilities-row:focus {
+    background: #f6fafd;
+    border-bottom: 1px solid #c1daf4;
+    border-top: 1px solid #c1daf4;
+    margin-top: -1px;
+  }
+
+  .vulnerabilities-row .action-buttons {
+    opacity: 0;
+  }
+
+  .vulnerabilities-row:hover .action-buttons,
+  .vulnerabilities-row:focus-within .action-buttons {
+    opacity: 1;
+  }
+}
+
+.vulnerability-info {
+  white-space: normal;
+}
+
+.vulnerability-title {
+  text-align: inherit;
+  white-space: normal;
+  line-height: inherit;
+}
+
+.vulnerability-namespace {
+  color: #707070;
+  font-size: 0.8em;
+}
+
+.dismissed .table-mobile-content:not(.action-buttons) {
+  opacity: 0.5;
+}
+</style>

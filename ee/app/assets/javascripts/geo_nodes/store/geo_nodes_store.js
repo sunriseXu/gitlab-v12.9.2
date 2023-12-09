@@ -1,0 +1,150 @@
+export default class GeoNodesStore {
+  constructor(primaryVersion, primaryRevision) {
+    this.state = {};
+    this.state.nodes = [];
+    this.state.nodeDetails = {};
+    this.state.primaryVersion = primaryVersion;
+    this.state.primaryRevision = primaryRevision;
+  }
+
+  setNodes(nodes) {
+    this.state.nodes = nodes.map(node => GeoNodesStore.formatNode(node));
+  }
+
+  getNodes() {
+    return this.state.nodes;
+  }
+
+  setNodeDetails(nodeId, nodeDetails) {
+    this.state.nodeDetails[nodeId] = GeoNodesStore.formatNodeDetails(nodeDetails);
+  }
+
+  removeNode(node) {
+    const indexOfRemovedNode = this.state.nodes.indexOf(node);
+    if (indexOfRemovedNode > -1) {
+      this.state.nodes.splice(indexOfRemovedNode, 1);
+      if (this.state.nodeDetails[node.id]) {
+        delete this.state.nodeDetails[node.id];
+      }
+    }
+  }
+
+  getPrimaryNodeVersion() {
+    return {
+      version: this.state.primaryVersion,
+      revision: this.state.primaryRevision,
+    };
+  }
+
+  getNodeDetails(nodeId) {
+    return this.state.nodeDetails[nodeId];
+  }
+
+  static formatNode(rawNode) {
+    const { id, name, url, primary, current, enabled } = rawNode;
+    return {
+      id,
+      name,
+      url,
+      primary,
+      current,
+      enabled,
+      internalUrl: rawNode.internal_url || '',
+      nodeActionActive: false,
+      basePath: rawNode._links.self,
+      repairPath: rawNode._links.repair,
+      editPath: rawNode.web_edit_url,
+      geoProjectsUrl: rawNode.web_geo_projects_url,
+      statusPath: rawNode._links.status,
+    };
+  }
+
+  static formatNodeDetails(rawNodeDetails) {
+    return {
+      id: rawNodeDetails.geo_node_id,
+      health: rawNodeDetails.health,
+      healthy: rawNodeDetails.healthy,
+      healthStatus: rawNodeDetails.health_status,
+      version: rawNodeDetails.version,
+      revision: rawNodeDetails.revision,
+      primaryVersion: rawNodeDetails.primaryVersion,
+      primaryRevision: rawNodeDetails.primaryRevision,
+      statusCheckTimestamp: rawNodeDetails.last_successful_status_check_timestamp * 1000,
+      replicationSlotWAL: rawNodeDetails.replication_slots_max_retained_wal_bytes,
+      missingOAuthApplication: rawNodeDetails.missing_oauth_application || false,
+      syncStatusUnavailable: rawNodeDetails.sync_status_unavailable || false,
+      storageShardsMatch: rawNodeDetails.storage_shards_match,
+      repositoryVerificationEnabled: rawNodeDetails.repository_verification_enabled,
+      replicationSlots: {
+        totalCount: rawNodeDetails.replication_slots_count || 0,
+        successCount: rawNodeDetails.replication_slots_used_count || 0,
+        failureCount: 0,
+      },
+      repositories: {
+        totalCount: rawNodeDetails.projects_count || 0,
+        successCount: rawNodeDetails.repositories_synced_count || 0,
+        failureCount: rawNodeDetails.repositories_failed_count || 0,
+      },
+      wikis: {
+        totalCount: rawNodeDetails.projects_count || 0,
+        successCount: rawNodeDetails.wikis_synced_count || 0,
+        failureCount: rawNodeDetails.wikis_failed_count || 0,
+      },
+      repositoriesChecksummed: {
+        totalCount: rawNodeDetails.projects_count || 0,
+        successCount: rawNodeDetails.repositories_checksummed_count || 0,
+        failureCount: rawNodeDetails.repositories_checksum_failed_count || 0,
+      },
+      wikisChecksummed: {
+        totalCount: rawNodeDetails.projects_count || 0,
+        successCount: rawNodeDetails.wikis_checksummed_count || 0,
+        failureCount: rawNodeDetails.wikis_checksum_failed_count || 0,
+      },
+      verifiedRepositories: {
+        totalCount: rawNodeDetails.projects_count || 0,
+        successCount: rawNodeDetails.repositories_verified_count || 0,
+        failureCount: rawNodeDetails.repositories_verification_failed_count || 0,
+      },
+      verifiedWikis: {
+        totalCount: rawNodeDetails.projects_count || 0,
+        successCount: rawNodeDetails.wikis_verified_count || 0,
+        failureCount: rawNodeDetails.wikis_verification_failed_count || 0,
+      },
+      lfs: {
+        totalCount: rawNodeDetails.lfs_objects_count || 0,
+        successCount: rawNodeDetails.lfs_objects_synced_count || 0,
+        failureCount: rawNodeDetails.lfs_objects_failed_count || 0,
+      },
+      jobArtifacts: {
+        totalCount: rawNodeDetails.job_artifacts_count || 0,
+        successCount: rawNodeDetails.job_artifacts_synced_count || 0,
+        failureCount: rawNodeDetails.job_artifacts_failed_count || 0,
+      },
+      containerRepositories: {
+        totalCount: rawNodeDetails.container_repositories_count || 0,
+        successCount: rawNodeDetails.container_repositories_synced_count || 0,
+        failureCount: rawNodeDetails.container_repositories_failed_count || 0,
+      },
+      designRepositories: {
+        totalCount: rawNodeDetails.design_repositories_count || 0,
+        successCount: rawNodeDetails.design_repositories_synced_count || 0,
+        failureCount: rawNodeDetails.design_repositories_failed_count || 0,
+      },
+      attachments: {
+        totalCount: rawNodeDetails.attachments_count || 0,
+        successCount: rawNodeDetails.attachments_synced_count || 0,
+        failureCount: rawNodeDetails.attachments_failed_count || 0,
+      },
+      lastEvent: {
+        id: rawNodeDetails.last_event_id || 0,
+        timeStamp: rawNodeDetails.last_event_timestamp,
+      },
+      cursorLastEvent: {
+        id: rawNodeDetails.cursor_last_event_id || 0,
+        timeStamp: rawNodeDetails.cursor_last_event_timestamp,
+      },
+      selectiveSyncType: rawNodeDetails.selective_sync_type,
+      dbReplicationLag: rawNodeDetails.db_replication_lag_seconds,
+    };
+  }
+}

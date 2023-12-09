@@ -1,0 +1,24 @@
+- page_title s_("UsageQuota|Usage")
+
+%h3.page-title
+  = s_('UsageQuota|Usage Quotas')
+
+.row
+  .col-sm-6
+    = s_('UsageQuota|Usage of group resources across the projects in the %{strong_start}%{group_name}%{strong_end} group').html_safe % { strong_start: '<strong>'.html_safe, strong_end: '</strong>'.html_safe, group_name: @group.name }
+
+.top-area.scrolling-tabs-container.inner-page-scroll-tabs
+  %ul.nav.nav-tabs.nav-links.scrolling-tabs.separator.js-storage-tabs{ role: 'tablist' }
+    %li.nav-item
+      %a.nav-link#pipelines-quota{ data: { toggle: "tab", action: '#pipelines-quota-tab' }, href: '#pipelines-quota-tab', 'aria-controls': '#pipelines-quota-tab', 'aria-selected': true }
+        = s_('UsageQuota|Pipelines')
+    %li.nav-item
+      %a.nav-link#storage-quota{ data: { toggle: "tab", action: '#storage-quota-tab' }, href: '#storage-quota-tab', 'aria-controls': '#storage-quota-tab', 'aria-selected': false }
+        = s_('UsageQuota|Storage')
+.tab-content
+  .tab-pane#pipelines-quota-tab
+    = render "namespaces/pipelines_quota/list",
+      locals: { namespace: @group, projects: @projects }
+  .tab-pane#storage-quota-tab
+    #js-storage-counter-app{ data: { namespace_path: @group.full_path, help_page_path: help_page_path('user/group/index.md', anchor: 'storage-usage-quota-starter')} }
+

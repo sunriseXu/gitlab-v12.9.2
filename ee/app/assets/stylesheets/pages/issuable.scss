@@ -1,0 +1,97 @@
+.block {
+  &.weight {
+    .gl-field-error {
+      margin-top: $gl-padding-8;
+      margin-left: -6px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &.epic {
+    .title {
+      display: flex;
+    }
+
+    .dropdown-contents-loading {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 9;
+      padding-top: 45px;
+      background-color: $dropdown-loading-bg;
+    }
+
+    .sidebar-dropdown-toggle:hover {
+      text-decoration: underline;
+      color: $blue-800;
+    }
+  }
+}
+
+.add-issuable-form-input-wrapper {
+  height: auto;
+  padding: $gl-vert-padding $gl-vert-padding 0 $gl-input-padding;
+
+  &.focus,
+  &.focus:hover {
+    border-color: $blue-300;
+    box-shadow: 0 0 4px $dropdown-input-focus-shadow;
+  }
+
+  .gl-show-field-errors &.form-control:not(textarea) {
+    height: auto;
+  }
+}
+
+.add-issuable-form-input-token-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.add-issuable-form-token-list-item {
+  max-width: 100%;
+  margin-bottom: $gl-vert-padding;
+  margin-right: 5px;
+}
+
+.add-issuable-form-input-list-item {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: $gl-vert-padding;
+}
+
+.add-issuable-form-input {
+  width: 100%;
+  border: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.add-issuable-form-actions {
+  margin-top: $gl-padding;
+}
+
+.limit-container-width {
+  .epic-page-container .issuable-details,
+  .emoji-list-container {
+    @include fixed-width-container;
+  }
+}
+
+// This override is needed because `display: flex`
+// on `.epic` above causes hiding logic in global
+// stylesheet is of lower specificity.
+.right-sidebar.right-sidebar-collapsed {
+  .block.epic .hide-collapsed {
+    display: none;
+  }
+}

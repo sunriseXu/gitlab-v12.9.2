@@ -1,0 +1,88 @@
+$draft-actions-left-margin: 40px + $gl-padding;
+
+.draft-note-component {
+  margin: 0;
+  background: $orange-50;
+
+  .drafts-count-component {
+    @include transition(background-color);
+    background: rgba($green-500, 0.2);
+  }
+
+  button:focus,
+  button:hover {
+    .drafts-count-component {
+      background: $black-transparent;
+    }
+  }
+
+  .referenced-commands.draft-note-commands {
+    background: $orange-100;
+    font-size: $label-font-size;
+    margin: 0 0 $gl-padding $draft-actions-left-margin;
+  }
+
+  .timeline-entry {
+    background-color: transparent;
+  }
+
+  .draft-note-actions {
+    margin: 0;
+
+    @include notes-media('min', map-get($grid-breakpoints, sm)) {
+      margin-left: $draft-actions-left-margin;
+    }
+  }
+}
+
+button[disabled] {
+  &,
+  &:focus,
+  &:hover {
+    .drafts-count-component {
+      background: $gl-gray-100;
+    }
+  }
+}
+
+.draft-pending-label {
+  background: $orange-600;
+  color: $white-light;
+  vertical-align: text-top;
+}
+
+.discussion-body,
+.diff-file {
+  .notes .note {
+    &.draft-note {
+      margin: 0 0 $gl-padding;
+      padding: 0;
+      border: 0;
+
+      &.is-editing {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .notes_holder {
+    .notes-content {
+      .notes {
+        &.draft-notes {
+          &::before {
+            border: 0;
+          }
+
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+.frame,
+.diff-discussions {
+  .badge.is-draft {
+    background-color: $orange-600;
+  }
+}

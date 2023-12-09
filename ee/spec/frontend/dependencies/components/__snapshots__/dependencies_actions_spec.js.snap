@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DependenciesActions component matches the snapshot 1`] = `
+<div
+  class="btn-toolbar"
+>
+  <div
+    class="btn-group flex-grow-1 mr-2"
+  >
+    <gl-dropdown-stub
+      class="flex-grow-1 text-center"
+      right=""
+      text="Component name"
+    >
+      <gl-dropdown-item-stub>
+        <span
+          class="d-flex"
+        >
+          <gl-icon-stub
+            class="flex-shrink-0 append-right-4"
+            name="mobile-issue-close"
+            size="16"
+          />
+          
+          Component name
+        
+        </span>
+      </gl-dropdown-item-stub>
+      <gl-dropdown-item-stub>
+        <span
+          class="d-flex"
+        >
+          <gl-icon-stub
+            class="flex-shrink-0 append-right-4 invisible"
+            name="mobile-issue-close"
+            size="16"
+          />
+          
+          Packager
+        
+        </span>
+      </gl-dropdown-item-stub>
+      <gl-dropdown-item-stub>
+        <span
+          class="d-flex"
+        >
+          <gl-icon-stub
+            class="flex-shrink-0 append-right-4 invisible"
+            name="mobile-issue-close"
+            size="16"
+          />
+          
+          Severity
+        
+        </span>
+      </gl-dropdown-item-stub>
+    </gl-dropdown-stub>
+     
+    <gl-button-stub
+      class="flex-grow-0 js-sort-order"
+      size="md"
+      title="Sort direction"
+      variant="secondary"
+    >
+      <gl-icon-stub
+        name="sort-lowest"
+        size="16"
+      />
+    </gl-button-stub>
+  </div>
+   
+  <gl-button-stub
+    class="js-download"
+    download="dependencies.json"
+    href="http://test.host/dependencies.json"
+    size="md"
+    title="Export as JSON"
+    variant="secondary"
+  >
+    <gl-icon-stub
+      name="export"
+      size="16"
+    />
+  </gl-button-stub>
+</div>
+`;

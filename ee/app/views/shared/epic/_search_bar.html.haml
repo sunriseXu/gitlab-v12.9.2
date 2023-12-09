@@ -1,0 +1,87 @@
+- type = local_assigns.fetch(:type)
+- hide_sort_dropdown = local_assigns.fetch(:hide_sort_dropdown, false)
+- show_roadmap_presets = local_assigns.fetch(:show_roadmap_presets, false)
+- hide_extra_sort_options = local_assigns.fetch(:hide_extra_sort_options, false)
+- preset_layout = roadmap_layout
+- is_quarters = preset_layout == "QUARTERS"
+- is_months = preset_layout == "MONTHS"
+- is_weeks = preset_layout == "WEEKS"
+
+.epics-filters{ class: "#{'epics-roadmap-filters' if show_roadmap_presets}" }
+  .epics-details-filters.filtered-search-block.d-flex.flex-column.flex-md-row.row-content-block.second-block
+    - if show_roadmap_presets
+      .btn-group.btn-group-toggle.append-right-default.js-btn-roadmap-presets{ data: { toggle: 'buttons' } }
+        %label.btn.btn-default.btn-roadmap-preset{ class: ("active" if is_quarters) }
+          %input{ type: 'radio', name: 'presetType', autocomplete: 'off', checked: ("checked" if is_quarters), value: 'QUARTERS' }
+            = _('Quarters')
+        %label.btn.btn-default.btn-roadmap-preset{ class: ("active" if is_months) }
+          %input{ type: 'radio', name: 'presetType', autocomplete: 'off', checked: ("checked" if is_months), value: 'MONTHS' }
+            = _('Months')
+        %label.btn.btn-default.btn-roadmap-preset{ class: ("active" if is_weeks) }
+          %input{ type: 'radio', name: 'presetType', autocomplete: 'off', checked: ("checked" if is_weeks), value: 'WEEKS' }
+            = _('Weeks')
+      .filter-dropdown-container.append-right-default
+        = render 'shared/epic/state_dropdown'
+    = form_tag page_filter_path, method: :get, class: 'flex-fill filter-form js-filter-form' do
+      - if params[:search].present?
+        = hidden_field_tag :search, params[:search]
+      - if @can_bulk_update
+        .check-all-holder.d-none.d-sm-block.hidden
+          = check_box_tag "check-all-issues", nil, false, class: "check-all-issues left"
+      .epics-other-filters.filtered-search-wrapper.d-flex.flex-column.flex-md-row
+        .filtered-search-box
+          = dropdown_tag(_('Recent searches'),
+            options: { wrapper_class: "filtered-search-history-dropdown-wrapper",
+            toggle_class: "btn filtered-search-history-dropdown-toggle-button",
+            dropdown_class: "filtered-search-history-dropdown",
+            content_class: "filtered-search-history-dropdown-content" }) do
+            .js-filtered-search-history-dropdown{ data: { full_path: search_history_storage_prefix } }
+          .filtered-search-box-input-container.droplab-dropdown
+            .scroll-container
+              %ul.tokens-container.list-unstyled
+                %li.input-token
+                  %input.form-control.filtered-search{ epic_endpoint_query_params(search_filter_input_options(type)) }
+            #js-dropdown-hint.filtered-search-input-dropdown-menu.dropdown-menu.hint-dropdown
+              %ul.filter-dropdown{ data: { dynamic: true, dropdown: true } }
+                %li.filter-dropdown-item{ data: {hint: "#{'{{hint}}'}", tag: "#{'{{tag}}'}", action: "#{'{{hint === \'search\' ? \'submit\' : \'\' }}'}" } }
+                  %button.btn.btn-link{ type: 'button' }
+                    -# Encapsulate static class name `{{icon}}` inside #{} to bypass
+                    -# haml lint's ClassAttributeWithStaticValue
+                    %svg
+                      %use{ 'xlink:href': "#{'{{icon}}'}" }
+                    %span.js-filter-hint
+                      {{formattedKey}}
+            #js-dropdown-operator.filtered-search-input-dropdown-menu.dropdown-menu
+              %ul.filter-dropdown{ data: { dropdown: true, dynamic: true } }
+                %li.filter-dropdown-item{ data: { value: "{{ title }}" } }
+                  %button.btn.btn-link{ type: 'button' }
+                    {{ title }}
+                    %span.btn-helptext
+                      {{ help }}
+            #js-dropdown-author.filtered-search-input-dropdown-menu.dropdown-menu
+              - if current_user
+                %ul{ data: { dropdown: true } }
+                  = render 'shared/issuable/user_dropdown_item',
+                    user: current_user
+              %ul.filter-dropdown{ data: { dynamic: true, dropdown: true } }
+                = render 'shared/issuable/user_dropdown_item',
+                  user: User.new(username: '{{username}}', name: '{{name}}'),
+                  avatar: { lazy: true, url: '{{avatar_url}}' }
+            #js-dropdown-label.filtered-search-input-dropdown-menu.dropdown-menu
+              %ul{ data: { dropdown: true } }
+                %li.filter-dropdown-item{ data: { value: 'none' } }
+                  %button.btn.btn-link{ type: 'button' }
+                    = _("No Label")
+                %li.divider.droplab-item-ignore
+              %ul.filter-dropdown{ data: { dynamic: true, dropdown: true } }
+                %li.filter-dropdown-item{ type: 'button' }
+                  %button.btn.btn-link
+                    %span.dropdown-label-box{ style: 'background: {{color}}' }
+                    %span.label-title.js-data-value
+                      {{ title }}
+
+          %button.clear-search.hidden{ type: 'button' }
+            = icon('times')
+        - unless hide_sort_dropdown
+          .filter-dropdown-container
+            = render 'shared/epic/sort_dropdown', hide_extra_sort_options: hide_extra_sort_options

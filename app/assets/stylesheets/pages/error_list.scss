@@ -1,0 +1,41 @@
+$gray-border: 1px solid $border-color;
+
+.error-list {
+  .sort-control {
+    .btn {
+      padding-right: 2rem;
+    }
+
+    .gl-dropdown-caret {
+      position: absolute;
+      right: 0.5rem;
+      top: 0.5rem;
+    }
+  }
+
+  @include media-breakpoint-up(sm) {
+    .row-top {
+      border: $gray-border;
+      background-color: $gray-50;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    .error-list-table {
+      .table-col {
+        min-height: 68px;
+
+        &:last-child {
+          &::before {
+            content: none !important;
+          }
+
+          div {
+            width: 100% !important;
+            padding: 0 !important;
+          }
+        }
+      }
+    }
+  }
+}

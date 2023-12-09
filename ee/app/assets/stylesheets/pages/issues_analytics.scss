@@ -1,0 +1,20 @@
+.issues-analytics-wrapper {
+  @include media-breakpoint-up(sm) {
+    padding-left: $gl-sidebar-padding;
+  }
+}
+
+.issues-analytics-chart {
+  .chart-title {
+    margin: $gl-padding-24 0 $gl-padding-32;
+  }
+}
+
+.issues-analytics-loading {
+  padding-top: $header-height * 2;
+}
+
+.issues-analytics-legend {
+  font-size: $gl-font-size-small;
+  color: $gl-text-color-secondary;
+}

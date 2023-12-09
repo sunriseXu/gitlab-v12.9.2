@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Project Header matches the snapshot 1`] = `
+<div
+  class="d-flex align-items-center page-title-holder text-secondary justify-content-between pb-2"
+>
+  <div
+    class="d-flex align-items-center"
+  >
+    <project-avatar-stub
+      class="flex-shrink-0"
+      project="[object Object]"
+      size="20"
+    />
+     
+    <gl-link-stub
+      class="js-namespace-link text-secondary"
+      href="/hello"
+    >
+      <span
+        class="js-namespace append-right-8"
+      >
+         hello 
+      </span>
+    </gl-link-stub>
+     
+    <span
+      class="append-right-8"
+    >
+      &gt;
+    </span>
+     
+    <project-avatar-stub
+      class="flex-shrink-0"
+      project="[object Object]"
+      size="20"
+    />
+     
+    <gl-link-stub
+      class="js-project-link text-secondary"
+    >
+      <span
+        class="js-name append-right-8"
+      >
+         world 
+      </span>
+    </gl-link-stub>
+  </div>
+   
+  <div
+    class="dropdown js-more-actions"
+  >
+    <button
+      class="js-more-actions-toggle d-flex align-items-center ml-2 btn btn-transparent"
+      data-toggle="dropdown"
+      title="More actions"
+      type="button"
+    >
+      <icon-stub
+        class="text-secondary"
+        name="ellipsis_v"
+        size="16"
+      />
+    </button>
+     
+    <ul
+      class="dropdown-menu dropdown-menu-right"
+    >
+      <li>
+        <gl-button-stub
+          class="js-remove-button"
+          size="md"
+          variant="secondary"
+        >
+          <span
+            class="text-danger"
+          >
+             Remove 
+          </span>
+        </gl-button-stub>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

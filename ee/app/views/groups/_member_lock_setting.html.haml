@@ -1,0 +1,8 @@
+- return unless can?(current_user, :admin_group, group) && License.feature_available?(:member_lock)
+
+%h5= _('Member lock')
+.form-group
+  .form-check
+    = f.check_box :membership_lock, class: 'form-check-input', data: { qa_selector: 'membership_lock_checkbox' }
+    = f.label :membership_lock, class: 'form-check-label' do
+      %span= _('Prevent adding new members to project membership within this group')

@@ -1,0 +1,109 @@
+.billing-plan-header {
+  border-bottom: 0;
+  padding-bottom: 0;
+
+  .billing-plan-logo svg {
+    height: 100px;
+  }
+
+  p {
+    margin: 0;
+
+    &:first-of-type {
+      margin-top: 16px;
+    }
+
+    &:last-of-type {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.billing-plans {
+  .card {
+    &-header {
+      line-height: $gl-line-height-20;
+    }
+
+    &-active {
+      background-color: $gray-light;
+    }
+
+    .card-body {
+      .price-per-month {
+        display: flex;
+        flex-direction: row;
+        color: $blue-500;
+        font-size: 48px;
+        font-weight: $gl-font-weight-bold;
+        line-height: 1;
+
+        .conditions {
+          list-style: none;
+          font-size: $gl-font-size-large;
+          font-weight: $gl-font-weight-bold;
+          line-height: $gl-line-height;
+        }
+      }
+
+      .price-per-year {
+        color: $blue-500;
+        font-size: $gl-font-size-small;
+        font-weight: $gl-font-weight-bold;
+      }
+    }
+  }
+}
+
+.subscription-table {
+  .flex-grid {
+    .grid-cell {
+      .property-label {
+        color: $gl-text-color-secondary;
+      }
+
+      .btn-help {
+        color: $blue-600;
+      }
+
+      .property-value {
+        color: $gl-text-color;
+
+        &.number {
+          font-size: 20px;
+          line-height: 24px;
+        }
+      }
+
+      .icon-wrapper {
+        line-height: 16px;
+        vertical-align: baseline;
+
+        svg {
+          vertical-align: middle;
+        }
+      }
+
+      &.header-cell {
+        font-weight: $gl-font-weight-bold;
+      }
+
+      &.no-value {
+        > * {
+          display: none;
+        }
+
+        @include media-breakpoint-down(sm) {
+          display: none;
+        }
+      }
+    }
+
+    @include media-breakpoint-up(lg) {
+      .header-cell {
+        width: 144px;
+        flex: none;
+      }
+    }
+  }
+}

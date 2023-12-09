@@ -1,0 +1,9 @@
+<%= sanitize_name(@epic.author_name) %> created an epic:
+
+<% if @epic.assignee %>
+  <%= assignees_label(@issue) %>
+<% end %>
+
+<% if @epic.description -%>
+ <%= @epic.description %>
+<% end %>

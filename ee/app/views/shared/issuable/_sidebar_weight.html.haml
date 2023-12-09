@@ -1,0 +1,5 @@
+- if issuable_sidebar[:type] == "issue"
+  - if issuable_sidebar[:features_available][:issue_weights]
+    .js-sidebar-weight-entry-point
+  - else
+    = render 'shared/promotions/promote_issue_weights'

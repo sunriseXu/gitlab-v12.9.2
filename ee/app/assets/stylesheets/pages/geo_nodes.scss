@@ -1,0 +1,25 @@
+@media (max-width: map-get($grid-breakpoints, sm)) {
+  .geo-node-actions {
+    flex-direction: column;
+    margin: 0 1rem;
+
+    .btn-sm {
+      width: 100%;
+      margin-top: 1rem;
+    }
+  }
+}
+
+.project-card-errors {
+  .btn-card-header {
+    &.collapsed {
+      .card-collapse-icon {
+        display: none;
+      }
+
+      .card-expand-icon {
+        display: block;
+      }
+    }
+  }
+}

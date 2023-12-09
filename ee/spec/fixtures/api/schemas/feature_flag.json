@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "required" : [
+    "id",
+    "name"
+  ],
+  "properties" : {
+    "id": { "type": "integer" },
+    "iid": { "type": ["integer", "null"] },
+    "created_at": { "type": "date" },
+    "updated_at": { "type": "date" },
+    "name": { "type": "string" },
+    "active": { "type": "boolean" },
+    "description": { "type": ["string", "null"] },
+    "edit_path": { "type": ["string", "null"] },
+    "update_path": { "type": ["string", "null"] },
+    "destroy_path": { "type": ["string", "null"] },
+    "scopes": { "type": "array", "items": { "$ref": "feature_flag_scope.json" } }
+  },
+  "additionalProperties": false
+}
